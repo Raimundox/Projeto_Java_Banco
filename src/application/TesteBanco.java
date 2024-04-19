@@ -13,7 +13,6 @@ public class TesteBanco {
             // Realizando movimentações bancárias
             contaDAO.transferirSaldo(contaCorrente, contaPoupanca, 300.0);
 
-
             // Exibindo informações das contas
             System.out.println("Saldo da conta corrente: " + contaCorrente.getSaldo());
             System.out.println("Saldo da conta poupança: " + contaPoupanca.getSaldo());
