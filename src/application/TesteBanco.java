@@ -1,23 +1,25 @@
 package application;
 
+import java.sql.SQLException;
+
 public class TesteBanco {
     public static void main(String[] args) {
-        ContaCorrente contaCorrente = new ContaCorrente("12345", 1000.0, 500.0);
-        ContaPoupanca contaPoupanca = new ContaPoupanca("54321", 2000.0, 0.05);
-
         try {
-            // Realizando algumas movimentações bancárias
-            contaCorrente.depositar(500.0);
-            contaCorrente.sacar(200.0);
+            ContaDAO contaDAO = new ContaDAO();
 
-            contaPoupanca.depositar(1000.0);
-            contaPoupanca.sacar(300.0);
+            ContaBancaria contaCorrente = contaDAO.carregar("12345");
+            ContaBancaria contaPoupanca = contaDAO.carregar("54321");
 
-            // Calculando o rendimento da conta poupança
-            double rendimento = contaPoupanca.calcularRendimento();
-            System.out.println("Rendimento da conta poupança: " + rendimento);
-        } catch (SaldoInsuficienteException e) {
-            System.out.println("Erro: " + e.getMessage());
+            // Realizando movimentações bancárias
+            contaDAO.transferirSaldo(contaCorrente, contaPoupanca, 300.0);
+
+
+            // Exibindo informações das contas
+            System.out.println("Saldo da conta corrente: " + contaCorrente.getSaldo());
+            System.out.println("Saldo da conta poupança: " + contaPoupanca.getSaldo());
+        } catch (SaldoInsuficienteException | SQLException e) {
+            System.out.println("Erro ao realizar movimentação bancária: " + e.getMessage());
         }
     }
 }
+
