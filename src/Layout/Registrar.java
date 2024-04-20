@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Registrar extends JFrame implements ActionListener {
-    private JTextField usernameField;
+    private JTextField usernameregField;
     private JPasswordField cpfField;
 
     public Registrar() {
@@ -27,9 +27,9 @@ public class Registrar extends JFrame implements ActionListener {
         usernameLabel.setForeground(Color.WHITE); // Definindo a cor do texto como branco
         panel.add(usernameLabel);
 
-        usernameField = new JTextField(20);
-        usernameField.setBounds(300, 200, 200, 25);
-        panel.add(usernameField);
+        usernameregField = new JTextField(20);
+        usernameregField.setBounds(300, 200, 200, 25);
+        panel.add(usernameregField);
 
         JLabel cpfLabel = new JLabel("CPF:");
         cpfLabel.setBounds(250, 250, 80, 25);
@@ -67,7 +67,7 @@ public class Registrar extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("Registrar")) {
-            String username = usernameField.getText();
+            String username = usernameregField.getText();
             String password = new String(cpfField.getPassword());
 
             System.out.println("Username: " + username);
