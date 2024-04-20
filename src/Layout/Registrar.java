@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 
 public class Registrar extends JFrame implements ActionListener {
     private JTextField usernameField;
-    private JPasswordField passwordField;
+    private JPasswordField cpfField;
 
     public Registrar() {
         setTitle("Registrar");
@@ -31,14 +31,14 @@ public class Registrar extends JFrame implements ActionListener {
         usernameField.setBounds(300, 200, 200, 25);
         panel.add(usernameField);
 
-        JLabel passwordLabel = new JLabel("CPF:");
-        passwordLabel.setBounds(250, 250, 80, 25);
-        passwordLabel.setForeground(Color.WHITE); // Definindo a cor do texto como branco
-        panel.add(passwordLabel);
+        JLabel cpfLabel = new JLabel("CPF:");
+        cpfLabel.setBounds(250, 250, 80, 25);
+        cpfLabel.setForeground(Color.WHITE); // Definindo a cor do texto como branco
+        panel.add(cpfLabel);
 
-        passwordField = new JPasswordField(20);
-        passwordField.setBounds(300, 250, 200, 25);
-        panel.add(passwordField);
+        cpfField = new JPasswordField(20);
+        cpfField.setBounds(300, 250, 200, 25);
+        panel.add(cpfField);
 
         // Botões
         JButton backButton = new JButton("Voltar");
@@ -68,7 +68,7 @@ public class Registrar extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("Registrar")) {
             String username = usernameField.getText();
-            String password = new String(passwordField.getPassword());
+            String password = new String(cpfField.getPassword());
 
             System.out.println("Username: " + username);
             System.out.println("Password: " + password);
