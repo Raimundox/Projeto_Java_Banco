@@ -6,8 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Login extends JFrame implements ActionListener {
-    private JTextField usernameField;
-    private JPasswordField passwordField;
+    private final JTextField usernameField;
+    private final JPasswordField passwordField;
 
     public Login() {
         setTitle("Login");

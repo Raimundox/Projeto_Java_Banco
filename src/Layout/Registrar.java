@@ -6,8 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Registrar extends JFrame implements ActionListener {
-    private JTextField usernameregField;
-    private JPasswordField cpfField;
+    private final JTextField usernameregField;
+    private final JPasswordField cpfField;
 
     public Registrar() {
         setTitle("Registrar");
