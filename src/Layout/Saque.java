@@ -55,15 +55,11 @@ public class Saque implements ActionListener {
     }
 
     private void sacar() {
-        // Obtenha o valor digitado pelo usuário
         double valor = Double.parseDouble(valorTextField.getText());
 
-        // Lógica de saque - aqui você pode implementar sua própria lógica de saque
-        // Verifique se o valor é válido e se há saldo suficiente para o saque, etc.
-        // Por enquanto, apenas exibiremos uma mensagem informando que o saque foi realizado com sucesso
+
         JOptionPane.showMessageDialog(frame, "Saque de R$ " + valor + " realizado com sucesso.");
 
-        // Se houver uma lógica mais complexa de saque, você pode implementá-la aqui
     }
 
     public static void main(String[] args) {

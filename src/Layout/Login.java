@@ -18,13 +18,11 @@ public class Login extends JFrame implements ActionListener {
 
         JPanel panel = new JPanel();
         panel.setLayout(null);
-        // Definindo a cor de fundo do painel como azul
         panel.setBackground(Color.GRAY);
 
-        // Labels e campos de texto
         JLabel usernameLabel = new JLabel("Nome:");
         usernameLabel.setBounds(250, 200, 80, 25);
-        usernameLabel.setForeground(Color.WHITE); // Definindo a cor do texto como branco
+        usernameLabel.setForeground(Color.WHITE);
         panel.add(usernameLabel);
 
         usernameField = new JTextField(20);
@@ -33,14 +31,13 @@ public class Login extends JFrame implements ActionListener {
 
         JLabel passwordLabel = new JLabel("CPF:");
         passwordLabel.setBounds(250, 250, 80, 25);
-        passwordLabel.setForeground(Color.WHITE); // Definindo a cor do texto como branco
+        passwordLabel.setForeground(Color.WHITE);
         panel.add(passwordLabel);
 
         passwordField = new JPasswordField(20);
         passwordField.setBounds(300, 250, 200, 25);
         panel.add(passwordField);
 
-        // Botões
         JButton registerButton = new JButton("Registrar");
         registerButton.setBounds(200, 300, 170, 50);
         registerButton.setFont(new Font("Arial", Font.BOLD, 20));
@@ -57,27 +54,22 @@ public class Login extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-    // Método para abrir a janela de registro
     private void openRegistrarWindow() {
         dispose();
         new Registrar();
     }
 
-    // Método para lidar com o evento de clique no botão de login
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("Logar")) {
             String username = usernameField.getText();
             String password = new String(passwordField.getPassword());
 
-            // Lógica de autenticação do usuário
-            // Neste ponto, você pode adicionar a lógica para verificar o nome de usuário e a senha
 
-            // Por enquanto, vamos apenas imprimir no console
             System.out.println("Username: " + username);
             System.out.println("Password: " + password);
 
-            // Após a verificação bem-sucedida, você pode prosseguir para a próxima etapa, como abrir a janela do perfil
+
             dispose();
             new Perfil();
         }

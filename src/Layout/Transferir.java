@@ -60,7 +60,6 @@ public class Transferir implements ActionListener {
 
         frame.setVisible(true);
 
-        // Aplica o filtro para aceitar apenas números no campo de saldo
         ((AbstractDocument) saldoTextField.getDocument()).setDocumentFilter(new DocumentFilter() {
             @Override
             public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
@@ -83,15 +82,11 @@ public class Transferir implements ActionListener {
                 ContaBancaria contaOrigem = contaDAO.carregar("12345");
                 ContaBancaria contaDestino = contaDAO.carregar(numeroContaDestino);
 
-                // Verifica se a conta de destino foi encontrada
                 if (contaDestino != null) {
-                    // Chama o método transferirSaldo do backend
                     contaDAO.transferirSaldo(contaOrigem, contaDestino, saldo);
 
-                    // Exibe mensagem de sucesso na interface gráfica
                     JOptionPane.showMessageDialog(frame, "Transferência realizada com sucesso!");
 
-                    // Limpa os campos de texto
                     saldoTextField.setText("");
                     destinoTextField.setText("");
                 } else {
@@ -104,7 +99,7 @@ public class Transferir implements ActionListener {
             }
         } else if (e.getSource() == voltarButton) {
             frame.dispose();
-            // Adicione aqui o código para voltar à tela anterior
+
             new Perfil();
         }
     }

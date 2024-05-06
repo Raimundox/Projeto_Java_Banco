@@ -6,9 +6,9 @@ public class ContaDAO {
     private Connection connection;
 
     public ContaDAO() throws SQLException {
-        String url = "jdbc:mysql://localhost:3306/projeto_java_banco";
+        String url = "jdbc:mysql://localhost:3306/bancoi";
         String user = "root";
-        String password = "password";
+        String password = "1711";
         connection = DriverManager.getConnection(url, user, password);
     }
 

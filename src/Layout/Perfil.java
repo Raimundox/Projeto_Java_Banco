@@ -58,13 +58,11 @@ public class Perfil implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jButton) {
             System.out.println("Botão Saque clicado!");
-            // Adicione aqui o código para o botão Saque
             frame.dispose();
             new Saque();
 
         } else if (e.getSource() == jButton2) {
             System.out.println("Botão Depósito clicado!");
-            // Adicione aqui o código para o botão Depósito
             frame.dispose();
             new Transferir();
         }else if (e.getSource() == jButton3){
@@ -78,7 +76,7 @@ public class Perfil implements ActionListener {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                new Transferir();
+                new Perfil();
             }
         });
     }

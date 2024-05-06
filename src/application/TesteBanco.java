@@ -7,16 +7,17 @@ public class TesteBanco {
         try {
             ContaDAO contaDAO = new ContaDAO();
 
-            ContaBancaria contaCorrente = contaDAO.carregar("12345");
-            ContaBancaria contaPoupanca = contaDAO.carregar("54321");
+            ContaBancaria contaCorrente = new ContaCorrente("123456", 1000.0, 500.0);
+            // Salvando a conta corrente no banco de dados
+            contaDAO.salvar(contaCorrente);
 
-            // Realizando movimentações bancárias
-            contaDAO.transferirSaldo(contaCorrente, contaPoupanca, 300.0);
+            // Criando uma conta poupança
+            ContaBancaria contaPoupanca = new ContaPoupanca("789012", 500.0, 0.03);
+            // Salvando a conta poupança no banco de dados
+            contaDAO.salvar(contaPoupanca);
 
-            // Exibindo informações das contas
-            System.out.println("Saldo da conta corrente: " + contaCorrente.getSaldo());
             System.out.println("Saldo da conta poupança: " + contaPoupanca.getSaldo());
-        } catch (SaldoInsuficienteException | SQLException e) {
+        } catch ( SQLException e) {
             System.out.println("Erro ao realizar movimentação bancária: " + e.getMessage());
         }
     }
