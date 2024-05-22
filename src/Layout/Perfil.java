@@ -148,10 +148,4 @@ public class Perfil implements ActionListener {
             }
         }
     }
-
-
-    public static void main(String[] args) {
-        // Para testar, você pode passar um CPF diretamente
-        new Perfil("12345678900");
-    }
 }

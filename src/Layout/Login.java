@@ -60,6 +60,7 @@ public class Login implements ActionListener {
 
         try {
             if (usuario.verificarCredenciais(cpf, senha)) {
+                JOptionPane.showMessageDialog(frame, "Login bem-sucedido.");
                 frame.dispose();
                 new Perfil(cpf);
             } else {
