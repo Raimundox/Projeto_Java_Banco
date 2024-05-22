@@ -5,7 +5,7 @@ import java.sql.SQLException;
 public class TesteBanco {
     public static void main(String[] args) {
         try {
-            ContaDAO contaDAO = new ContaDAO();
+            Banco contaDAO = new Banco();
 
             ContaBancaria contaCorrente = contaDAO.carregar("12345");
             ContaBancaria contaPoupanca = contaDAO.carregar("54321");

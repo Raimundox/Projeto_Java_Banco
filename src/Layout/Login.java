@@ -4,86 +4,74 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import application.Usuario;
 
-public class Login extends JFrame implements ActionListener {
-    private final JTextField usernameField;
-    private final JPasswordField passwordField;
+public class Login implements ActionListener {
+    private JFrame frame;
+    private JTextField cpfField;
+    private JPasswordField passwordField;
+    private JButton loginButton;
+    private Usuario usuario;
 
     public Login() {
-        setTitle("Login");
-        setSize(800, 700);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setResizable(false);
-        setLocationRelativeTo(null);
+        try {
+            usuario = new Usuario();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(frame, "Erro ao conectar ao banco de dados.");
+            System.exit(1);
+        }
 
-        JPanel panel = new JPanel();
-        panel.setLayout(null);
-        // Definindo a cor de fundo do painel como azul
-        panel.setBackground(Color.GRAY);
+        frame = new JFrame("Login");
 
-        // Labels e campos de texto
-        JLabel usernameLabel = new JLabel("Nome:");
-        usernameLabel.setBounds(250, 200, 80, 25);
-        usernameLabel.setForeground(Color.WHITE); // Definindo a cor do texto como branco
-        panel.add(usernameLabel);
+        JLabel cpfLabel = new JLabel("CPF:");
+        cpfLabel.setBounds(50, 50, 150, 30);
+        frame.add(cpfLabel);
 
-        usernameField = new JTextField(20);
-        usernameField.setBounds(300, 200, 200, 25);
-        panel.add(usernameField);
+        cpfField = new JTextField();
+        cpfField.setBounds(150, 50, 200, 30);
+        frame.add(cpfField);
 
-        JLabel passwordLabel = new JLabel("CPF:");
-        passwordLabel.setBounds(250, 250, 80, 25);
-        passwordLabel.setForeground(Color.WHITE); // Definindo a cor do texto como branco
-        panel.add(passwordLabel);
+        JLabel passwordLabel = new JLabel("Senha:");
+        passwordLabel.setBounds(50, 100, 150, 30);
+        frame.add(passwordLabel);
 
-        passwordField = new JPasswordField(20);
-        passwordField.setBounds(300, 250, 200, 25);
-        panel.add(passwordField);
+        passwordField = new JPasswordField();
+        passwordField.setBounds(150, 100, 200, 30);
+        frame.add(passwordField);
 
-        // Botões
-        JButton registerButton = new JButton("Registrar");
-        registerButton.setBounds(200, 300, 170, 50);
-        registerButton.setFont(new Font("Arial", Font.BOLD, 20));
-        registerButton.addActionListener(e -> openRegistrarWindow());
-        panel.add(registerButton);
-
-        JButton loginButton = new JButton("Logar");
-        loginButton.setBounds(400, 300, 170, 50);
-        loginButton.setFont(new Font("Arial", Font.BOLD, 20));
+        loginButton = new JButton("Login");
+        loginButton.setBounds(150, 150, 100, 30);
         loginButton.addActionListener(this);
-        panel.add(loginButton);
+        frame.add(loginButton);
 
-        getContentPane().add(panel);
-        setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 300);
+        frame.setLayout(null);
+        frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
     }
 
-    // Método para abrir a janela de registro
-    private void openRegistrarWindow() {
-        dispose();
-        new Registrar();
-    }
-
-    // Método para lidar com o evento de clique no botão de login
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals("Logar")) {
-            String username = usernameField.getText();
-            String password = new String(passwordField.getPassword());
+        String cpf = cpfField.getText();
+        String senha = new String(passwordField.getPassword());
 
-            // Lógica de autenticação do usuário
-            // Neste ponto, você pode adicionar a lógica para verificar o nome de usuário e a senha
-
-            // Por enquanto, vamos apenas imprimir no console
-            System.out.println("Username: " + username);
-            System.out.println("Password: " + password);
-
-            // Após a verificação bem-sucedida, você pode prosseguir para a próxima etapa, como abrir a janela do perfil
-            dispose();
-            new Perfil();
+        try {
+            if (usuario.verificarCredenciais(cpf, senha)) {
+                frame.dispose();
+                new Perfil(cpf);
+            } else {
+                JOptionPane.showMessageDialog(frame, "CPF ou senha incorretos.");
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(frame, "Erro ao verificar credenciais.");
         }
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(Login::new);
+        new Login();
     }
 }

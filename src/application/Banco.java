@@ -2,30 +2,14 @@ package application;
 
 import java.sql.*;
 
-public class ContaDAO {
+public class Banco {
     private Connection connection;
 
-    public ContaDAO() throws SQLException {
+    public Banco() throws SQLException {
         String url = "jdbc:mysql://localhost:3306/projeto_java_banco";
         String user = "root";
         String password = "password";
         connection = DriverManager.getConnection(url, user, password);
-    }
-
-    public void salvar(ContaBancaria conta) throws SQLException {
-        String query = "INSERT INTO contas (numero_conta, tipo_conta, saldo, limite_cheque_especial, taxa_rendimento) VALUES (?, ?, ?, ?, ?)";
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1, conta.getNumeroConta());
-        if (conta instanceof ContaCorrente) {
-            statement.setString(2, "corrente");
-            statement.setDouble(4, ((ContaCorrente) conta).getLimiteChequeEspecial());
-        } else {
-            statement.setString(2, "poupanca");
-            statement.setNull(4, Types.DOUBLE);
-        }
-        statement.setDouble(3, conta.getSaldo());
-        statement.setDouble(5, (conta instanceof ContaPoupanca) ? ((ContaPoupanca) conta).getTaxaRendimento() : 0);
-        statement.executeUpdate();
     }
 
     public ContaBancaria carregar(String numeroConta) throws SQLException {
@@ -62,6 +46,26 @@ public class ContaDAO {
         } finally {
             connection.setAutoCommit(true);
         }
+    }
+
+    public void sacar(String numeroConta, double valor) throws SQLException, SaldoInsuficienteException {
+        ContaBancaria conta = carregar(numeroConta);
+        if (conta == null) {
+            throw new SQLException("Conta não encontrada.");
+        }
+
+        conta.sacar(valor);
+        atualizarSaldo(conta);
+    }
+
+    public void depositar(String numeroConta, double valor) throws SQLException {
+        ContaBancaria conta = carregar(numeroConta);
+        if (conta == null) {
+            throw new SQLException("Conta não encontrada.");
+        }
+
+        conta.depositar(valor);
+        atualizarSaldo(conta);
     }
 
     private void atualizarSaldo(ContaBancaria conta) throws SQLException {

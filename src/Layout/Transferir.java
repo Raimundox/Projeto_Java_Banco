@@ -8,18 +8,21 @@ import javax.swing.text.DocumentFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import application.ContaBancaria;
-import application.ContaDAO;
-import application.SaldoInsuficienteException;
+import application.*;
 
 public class Transferir implements ActionListener {
     private JButton depositarButton, voltarButton;
     private JFrame frame;
     private JTextField saldoTextField, destinoTextField;
+    private String cpfUsuario;
+    private String numeroConta;
 
-    public Transferir() {
+    public Transferir(String cpfUsuario) {
+        this.cpfUsuario = cpfUsuario;
+
         frame = new JFrame("Transferir");
 
         depositarButton = new JButton("Transferir");
@@ -58,9 +61,10 @@ public class Transferir implements ActionListener {
         destinoLabel.setBounds(200, 300, 80, 30);
         frame.add(destinoLabel);
 
+        carregarInformacoesUsuario();
+
         frame.setVisible(true);
 
-        // Aplica o filtro para aceitar apenas números no campo de saldo
         ((AbstractDocument) saldoTextField.getDocument()).setDocumentFilter(new DocumentFilter() {
             @Override
             public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
@@ -75,25 +79,26 @@ public class Transferir implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == depositarButton) {
             String saldoStr = saldoTextField.getText();
-            String numeroContaDestino = destinoTextField.getText();
+            String cpfUsuarioDestino = destinoTextField.getText();
 
             try {
                 double saldo = Double.parseDouble(saldoStr);
-                ContaDAO contaDAO = new ContaDAO();
-                ContaBancaria contaOrigem = contaDAO.carregar("12345");
-                ContaBancaria contaDestino = contaDAO.carregar(numeroContaDestino);
+                Banco contaDAO = new Banco();
+                ContaBancaria contaOrigem = contaDAO.carregar(numeroConta);
+                ContaBancaria contaDestino = contaDAO.carregar(cpfUsuarioDestino);
 
-                // Verifica se a conta de destino foi encontrada
                 if (contaDestino != null) {
-                    // Chama o método transferirSaldo do backend
-                    contaDAO.transferirSaldo(contaOrigem, contaDestino, saldo);
+                    if (!contaOrigem.getNumeroConta().equals(contaDestino.getNumeroConta())) {
+                        contaDAO.transferirSaldo(contaOrigem, contaDestino, saldo);
 
-                    // Exibe mensagem de sucesso na interface gráfica
-                    JOptionPane.showMessageDialog(frame, "Transferência realizada com sucesso!");
+                        JOptionPane.showMessageDialog(frame, "Transferência realizada com sucesso!");
 
-                    // Limpa os campos de texto
-                    saldoTextField.setText("");
-                    destinoTextField.setText("");
+                        frame.dispose();
+
+                        new Perfil(cpfUsuario);
+                    } else {
+                        JOptionPane.showMessageDialog(frame, "Você não pode realizar transferência para a mesma conta.");
+                    }
                 } else {
                     JOptionPane.showMessageDialog(frame, "Conta de destino não encontrada.");
                 }
@@ -104,17 +109,31 @@ public class Transferir implements ActionListener {
             }
         } else if (e.getSource() == voltarButton) {
             frame.dispose();
-            // Adicione aqui o código para voltar à tela anterior
-            new Perfil();
+
+            new Perfil(cpfUsuario);
         }
     }
 
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                new Transferir();
+    private void carregarInformacoesUsuario() {
+        Usuario usuario = null;
+        try {
+            usuario = new Usuario();
+            ResultSet resultSet = usuario.obterInformacoesUsuario(cpfUsuario);
+            if (resultSet.next()) {
+                numeroConta = resultSet.getString("numero_conta");
             }
-        });
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(frame, "Erro ao carregar informações do usuário.");
+        } finally {
+            if (usuario != null) {
+                try {
+                    usuario.fecharConexao();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
     }
+
 }
