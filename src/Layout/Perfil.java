@@ -120,7 +120,6 @@ public class Perfil implements ActionListener {
                 String tipoDeConta = resultSet.getString("tipo_conta");
                 if (tipoDeConta.equalsIgnoreCase("Conta Corrente")) {
                     limiteChequeEspecialLabel.setText("Limite Cheque Especial: R$ " + resultSet.getDouble("limite_cheque_especial"));
-                    taxaRendimentoLabel.setText("");
                     rendimentoCalculadoLabel.setText("");
                 } else if (tipoDeConta.equalsIgnoreCase("Conta Poupança")) {
                     double saldo = resultSet.getDouble("saldo");
@@ -130,7 +129,7 @@ public class Perfil implements ActionListener {
                     ContaPoupanca contapoupanca = new ContaPoupanca(numero_conta, saldo, taxaRendimento);
                     double rendimentoCalculado = contapoupanca.calcularRendimento();
 
-                    taxaRendimentoLabel.setText("Taxa de Rendimento: " + taxaRendimento + "%");
+                    taxaRendimentoLabel.setText("Taxa de Rendimento: " + 0.5 + "%");
                     rendimentoCalculadoLabel.setText("Rendimento Calculado: R$ " + rendimentoCalculado);
                     limiteChequeEspecialLabel.setText("");
                 }

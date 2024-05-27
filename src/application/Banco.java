@@ -20,10 +20,10 @@ public class Banco {
         if (resultSet.next()) {
             String tipoConta = resultSet.getString("tipo_conta");
             double saldo = resultSet.getDouble("saldo");
-            if (tipoConta.equals("corrente")) {
+            if (tipoConta.equals("Conta Corrente")) {
                 double limiteChequeEspecial = resultSet.getDouble("limite_cheque_especial");
                 return new ContaCorrente(numeroConta, saldo, limiteChequeEspecial);
-            } else {
+            } else if (tipoConta.equals("Conta Poupança")) {
                 double taxaRendimento = resultSet.getDouble("taxa_rendimento");
                 return new ContaPoupanca(numeroConta, saldo, taxaRendimento);
             }
@@ -35,7 +35,11 @@ public class Banco {
         connection.setAutoCommit(false);
 
         try {
-            origem.sacar(valor);
+            if (origem.getTipoConta().equals("ContaCorrente")) {
+                ((ContaCorrente) origem).sacar(valor);
+            } else {
+                origem.sacar(valor);
+            }
             destino.depositar(valor);
             atualizarSaldo(origem);
             atualizarSaldo(destino);
@@ -69,10 +73,16 @@ public class Banco {
     }
 
     private void atualizarSaldo(ContaBancaria conta) throws SQLException {
-        String query = "UPDATE contas SET saldo = ? WHERE numero_conta = ?";
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setDouble(1, conta.getSaldo());
-        statement.setString(2, conta.getNumeroConta());
-        statement.executeUpdate();
+        String query2 = "UPDATE contas SET saldo = ?, limite_cheque_especial = ? WHERE numero_conta = ?";
+        PreparedStatement statement2 = connection.prepareStatement(query2);
+        statement2.setDouble(1, conta.getSaldo());
+        if (conta.getTipoConta().equals("ContaCorrente")) {
+            System.out.println("Tipo de conta de origem: " + conta.getTipoConta()); // Para depuração
+            statement2.setDouble(2, ((ContaCorrente) conta).getLimiteChequeEspecial());
+        } else {
+            statement2.setNull(2, Types.DOUBLE);
+        }
+        statement2.setString(3, conta.getNumeroConta());
+        statement2.executeUpdate();
     }
 }
