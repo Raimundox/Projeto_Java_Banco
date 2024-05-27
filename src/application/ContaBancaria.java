@@ -25,6 +25,8 @@ public abstract class ContaBancaria implements MovimentacaoBancaria {
         this.saldo = saldo;
     }
 
+    public abstract String getTipoConta();
+
     @Override
     public void depositar(double valor) {
         this.saldo += valor;

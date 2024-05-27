@@ -17,11 +17,23 @@ public class ContaCorrente extends ContaBancaria {
     }
 
     @Override
-    public void sacar(double valor) throws SaldoInsuficienteException {
-        double saldoDisponivel = getSaldo() + limiteChequeEspecial;
-        if (valor > saldoDisponivel) {
-            throw new SaldoInsuficienteException("Saldo insuficiente para saque.");
-        }
-        setSaldo(getSaldo() - valor);
+    public String getTipoConta() {
+        return "ContaCorrente";
     }
+
+    @Override
+    public void sacar(double valor) throws SaldoInsuficienteException {
+        if (valor > getSaldo() + limiteChequeEspecial) {
+            throw new SaldoInsuficienteException("Saldo insuficiente!");
+        }
+
+        if (valor <= getSaldo()) {
+            setSaldo(valor);
+        } else {
+            double restante = valor - getSaldo();
+            setSaldo(0);
+            limiteChequeEspecial -= restante;
+        }
+    }
+
 }

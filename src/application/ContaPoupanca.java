@@ -16,6 +16,11 @@ public class ContaPoupanca extends ContaBancaria {
         this.taxaRendimento = taxaRendimento;
     }
 
+    @Override
+    public String getTipoConta() {
+        return "ContaPoupanca";
+    }
+
     public double calcularRendimento() {
         return getSaldo() * taxaRendimento;
     }
