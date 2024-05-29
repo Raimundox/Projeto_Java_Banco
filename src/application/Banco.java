@@ -77,7 +77,6 @@ public class Banco {
         PreparedStatement statement2 = connection.prepareStatement(query2);
         statement2.setDouble(1, conta.getSaldo());
         if (conta.getTipoConta().equals("ContaCorrente")) {
-            System.out.println("Tipo de conta de origem: " + conta.getTipoConta()); // Para depuração
             statement2.setDouble(2, ((ContaCorrente) conta).getLimiteChequeEspecial());
         } else {
             statement2.setNull(2, Types.DOUBLE);
