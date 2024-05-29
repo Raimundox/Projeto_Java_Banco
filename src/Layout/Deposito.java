@@ -103,6 +103,8 @@ public class Deposito implements ActionListener {
 
         frame.dispose();
         new Perfil(cpfUsuario);
+        JOptionPane.showMessageDialog(frame, "Saque de R$ " + valor + " realizado com sucesso.");
+
     }
 
     public static void main(String[] args) {

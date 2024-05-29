@@ -99,6 +99,8 @@ public class Transferir implements ActionListener {
                     } else {
                         JOptionPane.showMessageDialog(frame, "Você não pode realizar transferência para a mesma conta.");
                     }
+                    saldoTextField.setText("");
+                    destinoTextField.setText("");
                 } else {
                     JOptionPane.showMessageDialog(frame, "Conta de destino não encontrada.");
                 }
@@ -109,7 +111,6 @@ public class Transferir implements ActionListener {
             }
         } else if (e.getSource() == voltarButton) {
             frame.dispose();
-
             new Perfil(cpfUsuario);
         }
     }
